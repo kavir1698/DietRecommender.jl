@@ -1,0 +1,9 @@
+~03003~^~0300~^~Babyfood, meat, beef, junior~^~BABYFOOD,MEAT,BF,JR~^~~^~~^~Y~^~~^0^~~^6.25^^^
+~03023~^~0300~^~Babyfood, finger snacks, GERBER, GRADUATES, PUFFS, apple and cinnamon~^~BABYFOOD,FINGER SNACKS,GERBER,GRADUATES,PUFFS,APPL & CINN~^~~^~~^~Y~^~~^0^~~^^^^
+~03188~^~0300~^~Babyfood, cereal, mixed, with applesauce and bananas, junior, fortified~^~BABYFOOD,CRL,MXD,W/ APPLSAUC & BANANAS,JR,FORT~^~~^~~^~Y~^~~^0^~~^6.10^3.40^8.40^4.10
+~03192~^~0300~^~Babyfood, cereal, oatmeal, with applesauce and bananas, junior, fortified~^~BABYFOOD,CRL,OATMEAL,W/ APPLSAUC & BANANAS,JR,FORT~^~~^~~^~Y~^~~^0^~~^6.04^3.50^8.40^4.10
+~03194~^~0300~^~Babyfood, cereal, Rice, dry, fortified~^~BABYFOOD,CRL,RICE,DRY,FORT~^~~^~~^~Y~^~~^0^~~^5.95^3.82^8.37^4.16
+~03302~^~0300~^~Babyfood, snack, GERBER, GRADUATES, YOGURT MELTS~^~BABYFOOD,SNACK,GERBER,GRADUATES,YOGURT MELTS~^~~^~~^~Y~^~~^0^~~^6.25^^^
+~07028~^~0700~^~Ham, sliced, pre-packaged, deli meat (96%fat free, water added)~^~HAM,SLICED,PRE-PACKAGED,DELI MEAT (96%FAT FREE,H2O ADDED)~^~~^~~^~Y~^~~^0^~~^^^^
+~11056~^~1100~^~Beans, snap, green, canned, regular pack, drained solids~^~BEANS,SNAP,GRN,CND,REG PK,DRND SOL~^~~^~~^~Y~^~~^0^~~^6.25^2.44^8.37^3.57
+~43417~^~0300~^~Babyfood, meat, beef with vegetables, toddler~^~BABYFOOD,MEAT,BF W/ VEG,TODD~^~~^~~^~Y~^~~^0^~~^^^^
