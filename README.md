@@ -17,7 +17,7 @@ diet_ids, diet_names, diet_amounts = get_diet(your_age, your_sex, your_weight)
 ```md
 Optimization status: LOCALLY_SOLVED 
 
-Calorie intake: 5279.957465715046 
+Calorie intake: 5280 
 
 Your recommended diet per day:
 
