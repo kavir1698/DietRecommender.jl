@@ -5,7 +5,7 @@ Create a diet with minimum energies while fulfilling all recommended micro- and 
 ## Example
 
 ```julia
-using DietRecommeder
+using DietRecommender
 
 your_age = 22
 your_sex = "male"
