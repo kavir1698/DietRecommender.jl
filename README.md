@@ -2,6 +2,8 @@
 
 Create a diet with minimum energies while fulfilling all recommended micro- and macro-nutrition elements. Using USDA's food composition database and linear programming, it finds a personalized diet given your age, sex and weight with which you fulfill all recommended daily micro- and macro-nutritional doses and take the minimum calories.
 
+> Currently, the minimum calories of a diet that fulfills all recommended nutritional dosages is much more than the recommended calorie intakes. I am not sure why this happens. Possibly it is a result of recommended dosages, which cannot be fulfilled without taking too much calories. I welcome any comments about this issue.
+
 ## Example
 
 ```julia
