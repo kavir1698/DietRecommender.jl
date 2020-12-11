@@ -270,7 +270,7 @@ function get_min_max(dri; age=22, sex="male", weight=70)
 		end
   end
 
-  # adjust those nutrients whose unit it g/kg to the body weight.
+  # adjust those nutrients whose unit is g/kg to the body weight.
   for index in 1:length(mins_refilled)
     if select_dri[index, Symbol("Unit(/d)")] == "g/kg"
       if mins_refilled[index] != 0
@@ -320,12 +320,12 @@ Return `nutrs`, `dri`, `groups`, `foodids`, `foodnames`, `nfoods`, `nutamounts`,
 * `dri:` recommended range of nutritions for various groups. A tale with the following columns: sex, AgeMin(year), AgeMax(year), Nutrient (nutrient name), DRI (recommended amound), Unit(/d)(unit of the recommended amount per day), DRI available (whether there is strong evidence for DRI), Upper intake (maximum amount before it's dangerous), id (nutrition id)
 * `groups:` A list of food groups (second column) and their ids (first column).
 * `foodids:` A list of all food IDs.
-* `foodnames:` A list of all food names, with the same order as foodids.
-* `nutamounts:` A list of lists, where each inner list has all the nutrient amounts per food, i the order of foodids.
-* `calories:` calories in each food
-* `dri_ids:` A list of nutrient IDs
-* `mins:` The minimum recommended amount for each nutrient in the order of `dri_ids` per day.
-* `maxs:` The maximum recommended amount for each nutrient in the order of `dri_ids` per day.
+* `foodnames:` A list of all food names, with the same order as `foodids`.
+* `nutamounts:` A list of lists, where each inner list has all the nutrient amounts per food. It has the same order as `foodids`.
+* `calories:` calories in each food.
+* `dri_ids:` A list of nutrient IDs.
+* `mins:` The minimum recommended amount for each nutrient in grams per day. It has the same order as `dri_ids`.
+* `maxs:` The maximum recommended amount for each nutrient in grams per day. It has the same order as `dri_ids`.
 """
 function loaddata(your_age, your_sex, your_weight; only_groups=[])
   # mkpath("../data")
@@ -510,4 +510,18 @@ function find_groups(nutrs, foodids)
     push!(foodgroup, groupid)
   end
   return foodgroup
+end
+
+function constraints(dri, dri_ids, mins, maxs)
+  nutrient_name_ids = [findfirst(x -> .&(!ismissing(dri.id[x]), dri.id[x] == id), 1:size(dri, 1)) for id in dri_ids]
+  nutrient_names = dri[nutrient_name_ids, :Nutrient]
+  return DataFrame(:nutrient => nutrient_names, :nutrient_id => dri_ids, Symbol("min(g)") => mins, Symbol("max (g)") => maxs)
+end
+
+function exclude_nutrients(dri_ids, mins, maxs, exclude_ids)
+  new_rows = findall(x-> !in(x, exclude_ids), dri_ids)
+  dri_ids = dri_ids[new_rows]
+  mins = mins[new_rows]
+  maxs = maxs[new_rows]
+  return dri_ids, mins, maxs
 end

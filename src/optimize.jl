@@ -5,6 +5,7 @@ optimize(mins::Array, maxs::Array, nutamounts::Array, calories::Array; energy_id
 This is also called the Stigler's Diet Problem
 
 # Parameters
+
 * mins: minimum allowed intake of nutrients for a given age and sex per day
 * maxs: maximum allowed intake of nutrients for a given age and sex per day
 * nutamounts: A nested list where each food (the outer list) has a combination of different nutrients (the inner list)
@@ -19,10 +20,10 @@ function optimize(mins, maxs,  nutamounts, calories, dri_ids, nfoods, exclude_in
 	params[:mip_solver] = with_optimizer(Cbc.Optimizer, logLevel=0)
 	m = Model(with_optimizer(optimizer, params))
 
-	nnutrients = length(dri_ids)  # or length(unique(nutrs[:nut]))
+	nnutrients = length(dri_ids)
 
 	@variable(m, a[i=1:nfoods,j=1:nnutrients] == nutamounts[i][j]);  # amount of nutrient Nj in one unit of food Fi.
-	@variable(m, y[1:nfoods]) # amount of food i per day. make it integers (@variable(m, y[1:nfoods] >= 0, Int))? No, because the amounts are per 100 grams per day
+	@variable(m, y[1:nfoods]) # amount of food i per day. the amounts are per 100 grams per day
 	@variable(m, cc[c=1:nfoods] == calories[c]); # calorie of each food
 
 	
@@ -30,7 +31,6 @@ function optimize(mins, maxs,  nutamounts, calories, dri_ids, nfoods, exclude_in
 	@constraint(m, y[exclude_indices] .== 0.0)  # set those foods that are excluded to 0
 	for nn in 1:nnutrients
 		@constraint(m, mins[nn] <= sum(a[i,nn]*y[i] for i=1:nfoods) <= maxs[nn])
-		# @constraint(m, mins[nn] <= sum(a[i,nn]*y[i] for i=1:nfoods))  # only the minimums
 	end
 
 	@objective(m, Min, sum(cc[i]*y[i] for i=1:nfoods));

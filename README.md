@@ -11,7 +11,7 @@ using DietRecommender
 
 your_age = 22
 your_sex = "male"
-your_weight = 70
+your_weight = 70 # in kilograms
 
 diet_ids, diet_names, diet_amounts = get_diet(your_age, your_sex, your_weight)
 ```
