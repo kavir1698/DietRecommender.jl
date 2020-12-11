@@ -78,7 +78,7 @@ function get_diet(your_age, your_sex, your_weight; only_groups=[100, 500, 900, 1
 	println("\nQuerying the database...\n")
 	nutrs, dri, groups, foodids, foodnames, nfoods, nutamounts, calories, dri_ids, mins, maxs = loaddata(your_age, your_sex, your_weight; only_groups=only_groups);
 
-  dri_ids, mins, maxs = exclude_nutrients(dri_ids, mins, maxs, [255, 204])
+  # dri_ids, mins, maxs = exclude_nutrients(dri_ids, mins, maxs, [255, 204])
   dri_ids, mins, maxs = exclude_nutrients(dri_ids, mins, maxs, excluded_nutrients)
   exclude_indices, exclude_ids = return_excluded_food_indices(nutrs, exclude_food, foodids)
 
