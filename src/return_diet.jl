@@ -67,14 +67,14 @@ function get_diet(your_age, your_sex, your_weight, only_groups=[100, 500, 900, 1
     end
   end
 
-  print_diet(diet_ids, diet_names, diet_amounts)
+  print_diet(diet_names, diet_amounts)
 
   return diet_ids, diet_names, diet_amounts
 end
 
-function print_diet(diet_ids, diet_names, diet_amounts)
+function print_diet(diet_names, diet_amounts)
   println("")
   for i in 1:length(diet_ids)
-    println(i, ". ", diet_ids[i], ". ", diet_names[i], ": ", diet_amounts[i], " grams")
+    println(i, ". ", diet_names[i], ": ", diet_amounts[i], " grams")
   end
 end
