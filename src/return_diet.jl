@@ -31,14 +31,14 @@ export get_diet
   * 2500: Snacks 
   * 3500: American Indian/Alaska Native Foods 
   * 3600: Restaurant Foods 
-* `exclude_list`: Array with list of keywords. Exclude foods that have the such words in their description. Defaults to `["pickle", "pickled", "w/ added", "with added", "sweetened", "canned", "with artificial", "w/ artificial"]`.
+* `exclude_food`: Array with list of keywords. Exclude foods that have the such words in their description. Defaults to `["pickle", "pickled", "w/ added", "with added", "sweetened", "canned", "with artificial", "w/ artificial"]`.
 """
-function get_diet(your_age, your_sex, your_weight, only_groups=[100, 500, 900, 1000, 1100, 1200, 1300, 1500, 1600, 1700, 2000], exclude_list = ["pickle", "pickled", "w/ added", "with added", "sweetened", "canned", "with artificial", "w/ artificial"])
+function get_diet(your_age, your_sex, your_weight, only_groups=[100, 500, 900, 1000, 1100, 1200, 1300, 1500, 1600, 1700, 2000], exclude_food = ["pickle", "pickled", "w/ added", "with added", "sweetened", "canned", "with artificial", "w/ artificial"])
 
 	println("\nQuerying the database...\n")
 	nutrs, dri, groups, foodids, foodnames, nfoods, nutamounts, calories, dri_ids, mins, maxs = loaddata(your_age, your_sex, your_weight; only_groups=only_groups);
 
-  exclude_indices, exclude_ids = return_excluded_food_indices(nutrs, exclude_list, foodids)
+  exclude_indices, exclude_ids = return_excluded_food_indices(nutrs, exclude_food, foodids)
 
 	println("\nOptimizing...\n")
   m, status, objval, yval = optimize(mins, maxs, nutamounts, calories, dri_ids, nfoods, exclude_indices);
