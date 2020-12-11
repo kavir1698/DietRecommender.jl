@@ -353,8 +353,8 @@ function loaddata(your_age, your_sex, your_weight; only_groups=[])
       calories = Float64[] # calories in each food
       for index in 1:nfoods
         foodid = foodids[index]
-        calory = nutrs[.&(nutrs[:food] .== foodid, nutrs[:nut] .== 208), :amount]
-        push!(calories, calory[1])
+        calorie = nutrs[.&(nutrs[:food] .== foodid, nutrs[:nut] .== 208), :amount]
+        push!(calories, calorie[1])
       end
       nutamounts = getnutamounts(nfoods, foodids, dri_ids, nutrs);
     else
@@ -362,8 +362,8 @@ function loaddata(your_age, your_sex, your_weight; only_groups=[])
       calories = Float64[] # calories in each food
       for index in 1:nfoods
         foodid = foodids[index]
-        calory = nutrs[.&(nutrs[:food] .== foodid, nutrs[:nut] .== 208), :amount]
-        push!(calories, calory[1])
+        calorie = nutrs[.&(nutrs[:food] .== foodid, nutrs[:nut] .== 208), :amount]
+        push!(calories, calorie[1])
       end
     end
 

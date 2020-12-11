@@ -1,6 +1,6 @@
 
 """
-optimize(mins::Array, maxs::Array, nutamounts::Array, calories::Array; energy_id::Int=208)
+optimize(mins::Array, maxs::Array, nutamounts::Array, calories::Array)
 
 This is also called the Stigler's Diet Problem
 
@@ -10,14 +10,13 @@ This is also called the Stigler's Diet Problem
 * maxs: maximum allowed intake of nutrients for a given age and sex per day
 * nutamounts: A nested list where each food (the outer list) has a combination of different nutrients (the inner list)
 * calories: A list of amount of energy (kcal) in each food
-* energy_id: ID of energy (kcal) as a nutrient. Default is 208
 """
-function optimize(mins, maxs,  nutamounts, calories, dri_ids, nfoods, exclude_indices; energy_id::Int=208)
+function optimize(mins, maxs, nutamounts, calories, dri_ids, nfoods, exclude_indices)
 
 	optimizer = Juniper.Optimizer
 	params = Dict{Symbol,Any}()
 	params[:nl_solver] = with_optimizer(Ipopt.Optimizer, print_level=0)
-	params[:mip_solver] = with_optimizer(Cbc.Optimizer, logLevel=0)
+	# params[:mip_solver] = with_optimizer(Cbc.Optimizer, logLevel=0)
 	m = Model(with_optimizer(optimizer, params))
 
 	nnutrients = length(dri_ids)
