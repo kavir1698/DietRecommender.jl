@@ -1,8 +1,6 @@
 # DietRecommender.jl
 
-Create a diet with minimum calorie intake while fulfilling all recommended micro- and macro-nutrients. Using USDA's food composition database and linear programming, it finds a personalized diet given your age, sex and weight with which you fulfill all recommended daily micro- and macro-nutrients with minimum calories.
-
-The recommended diet is personalized on your age, sex, and weight, and also on your food preferences. You can exclude specific foods or complete food categories. It is also possible to exclude nutrients from constraints.
+Create a diet with minimum calorie intake while fulfilling all recommended micro- and macro-nutrients. Using USDA's food composition database and linear programming, it finds a personalized diet given your age, sex, weight, and food preference. You can exclude specific foods or complete food categories. It is also possible to exclude nutrients from constraints.
 
 > Currently, the minimum calories of a diet that fulfills all recommended nutrients is much more than the recommended calorie intake. I am not sure why this happens. Possibly it is a result of recommended daily intake values, which cannot be fulfilled without taking too much calories. I welcome any comments about this issue.
 
