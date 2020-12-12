@@ -80,7 +80,7 @@ function get_diet(your_age, your_sex, your_weight; only_groups=[100, 500, 900, 1
 
   dri_ids, mins, maxs, nutamounts = exclude_nutrients(dri_ids, mins, maxs, nutamounts, [204, 255])
   if length(excluded_nutrients) > 0 
-    dri_ids, mins, maxs, nutamounts = exclude_nutrients(dri_ids, mins, maxs, excluded_nutrients, nutamounts)
+    dri_ids, mins, maxs, nutamounts = exclude_nutrients(dri_ids, mins, maxs, nutamounts, excluded_nutrients)
   end
   exclude_indices, exclude_ids = return_excluded_food_indices(nutrs, exclude_food, foodids)
 
@@ -116,7 +116,7 @@ function get_diet(your_age, your_sex, your_weight; only_groups=[100, 500, 900, 1
 
   print_diet(diet_names, diet_amounts)
 
-  return diet_ids, diet_names, diet_amounts
+  return diet_ids, diet_names, diet_amounts, m, status, objval, yval
 end
 
 function print_diet(diet_names, diet_amounts)
