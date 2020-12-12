@@ -19,24 +19,22 @@ diet_ids, diet_names, diet_amounts = get_diet(your_age, your_sex, your_weight)
 ```md
 Optimization status: LOCALLY_SOLVED 
 
-Calorie intake: 5280 
+Calorie intake: 5054 
 
 Your recommended diet per day:
 
 
-1. Raisins, seedless: 1489.284 grams
-2. Asparagus, cooked, boiled, drained: 324.472 grams
-3. Beans, snap, green, raw: 463.388 grams
-4. Butterbur, cooked, boiled, drained, without salt: 2126.634 grams
-5. Cucumber, peeled, raw: 101.094 grams
-6. Asparagus, cooked, boiled, drained, with salt: 85.661 grams
-7. Butterbur, cooked, boiled, drained, with salt: 11.372 grams
-8. Carrots, cooked, boiled, drained, with salt: 298.302 grams
-9. Waxgourd, (chinese preserving melon), cooked, boiled, drained, with salt: 71.164 grams
-10. Mushrooms, portabella, exposed to ultraviolet light, raw: 52.429 grams
-11. Beef, variety meats and by-products, brain, cooked, simmered: 4.443 grams
-12. Crustaceans, shrimp, mixed species, cooked, breaded and fried: 100.296 grams
-13. Mollusks, oyster, eastern, wild, raw: 72.081 grams
+1. Egg, yolk, dried: 2.454 grams
+2. Raisins, seedless: 1514.629 grams
+3. Asparagus, cooked, boiled, drained: 232.107 grams
+4. Spinach, cooked, boiled, drained, without salt: 109.184 grams
+5. Asparagus, cooked, boiled, drained, with salt: 152.499 grams
+6. Carrots, cooked, boiled, drained, with salt: 199.236 grams
+7. Mushrooms, shiitake, cooked, with salt: 14.097 grams
+8. Spinach, cooked, boiled, drained, with salt: 87.436 grams
+9. Mushrooms, brown, italian, or crimini, exposed to ultraviolet light, raw: 45.555 grams
+10. Crustaceans, shrimp, mixed species, cooked, breaded and fried: 104.196 grams
+11. Mollusks, oyster, eastern, wild, cooked, dry heat: 49.396 grams
 ```
 
 ## Installation

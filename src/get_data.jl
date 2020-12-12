@@ -518,10 +518,13 @@ function constraints(dri, dri_ids, mins, maxs)
   return DataFrame(:nutrient => nutrient_names, :nutrient_id => dri_ids, Symbol("min(g)") => mins, Symbol("max (g)") => maxs)
 end
 
-function exclude_nutrients(dri_ids, mins, maxs, exclude_ids)
+function exclude_nutrients(dri_ids, mins, maxs, nutamounts, exclude_ids)
   new_rows = findall(x-> !in(x, exclude_ids), dri_ids)
   dri_ids = dri_ids[new_rows]
   mins = mins[new_rows]
   maxs = maxs[new_rows]
-  return dri_ids, mins, maxs
+  for food in 1:length(nutamounts)
+    nutamounts[food] = nutamounts[food][new_rows]
+  end
+  return dri_ids, mins, maxs, nutamounts
 end

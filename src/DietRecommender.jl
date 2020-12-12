@@ -7,7 +7,6 @@ using CSV
 using Query
 using JuMP
 using Ipopt
-# using Cbc
 using Juniper
 using StatsBase: sample
 include("get_data.jl")
