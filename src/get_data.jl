@@ -94,11 +94,11 @@ function apply_updates(food_des, nut_data, updatedir)
   nutc = getnutdata(updatedir, filename="CHG_NUTR.txt")
 
   for rr in 1:size(foodc)[1]
-    food_des[.&(food_des[1] .== foodc[rr, 1], food_des[2] .== foodc[rr, 2]), 3:end] = DataFrame(foodc[rr, 3:end])
+    food_des[.&(food_des[!, 1] .== foodc[rr, 1], food_des[!, 2] .== foodc[rr, 2]), 3:end] = DataFrame(foodc[rr, 3:end])
   end
 
   for rr in 1:size(nutc)[1]
-    nut_data[.&(nut_data[1] .== nutc[rr, 1], nut_data[2] .== nutc[rr, 2]), 3:end] = DataFrame(nutc[rr, 3:end])
+    nut_data[.&(nut_data[!, 1] .== nutc[rr, 1], nut_data[!, 2] .== nutc[rr, 2]), 3:end] = DataFrame(nutc[rr, 3:end])
   end
 
   # remove deleted entries in the update
@@ -106,7 +106,7 @@ function apply_updates(food_des, nut_data, updatedir)
   nutd_file = joinpath(updatedir, "DEL_NUTR.txt")
   nutd = CSV.read(nutd_file, DataFrame, header=0, delim='^', quotechar='~');
   for rr in 1:size(nutd)[1]
-    nut_data = nut_data[.~.&(nut_data[1] .== nutd[rr, 1], nut_data[2] .== nutd[rr, 2]), :]
+    nut_data = nut_data[.~.&(nut_data[!, 1] .== nutd[rr, 1], nut_data[!, 2] .== nutd[rr, 2]), :]
   end
 
   # TODO: update weights too
@@ -148,7 +148,7 @@ function fix_DRI_table(;dritable::String="dri.csv", data_folder::String="sr28asc
   dd = CSV.read("dri_new.csv", DataFrame, header=1, delim=',');
   availables = Dict()
   notavailables = Set()
-  nuts = levels(dd[:Nutrient])
+  nuts = levels(dd[!, :Nutrient])
   for rr in 1:size(nuts)[1]
     item = nuts[rr]
     found = false
@@ -203,8 +203,8 @@ function allnutdata(;data_folder::String="./data/sr28asc", dri_file::String="./d
     food_des, nut_data = apply_updates(food_des, nut_data, updatedir)
   end
 
-  df1 = join(food_des, nut_data, on=:food, kind=:inner);
-  nutrs = join(df1, nutr_def, on=:nut, kind=:inner);
+  df1 = innerjoin(food_des, nut_data, on=:food);
+  nutrs = innerjoin(df1, nutr_def, on=:nut);
 
   dri = load_dri(filepath=dri_file);
   groups = get_food_groups(data_folder);
@@ -239,11 +239,11 @@ function get_min_max(dri; age=22, sex="male", weight=70)
     @collect DataFrame
   end
 
-  select_dri = select_dri[.~ismissing.(select_dri[:id]), :];
+  select_dri = select_dri[.~ismissing.(select_dri[!, :id]), :];
 
-  minlist = select_dri[:DRI]
-  maxlist = select_dri[:Upper_intake]
-  dri_ids = select_dri[:id]
+  minlist = select_dri[!, :DRI]
+  maxlist = select_dri[!, :Upper_intake]
+  dri_ids = select_dri[!, :id]
 
   # Remove the upper levels where the refernce intakes (minlist) are more than the upper levels (max list). This is from the data. In these cases, the upper intake is for intaking from supplements not from food. So it is safe to remove the upper intake in those cases.
   for rr in 1:length(minlist)
@@ -300,7 +300,7 @@ function getnutamounts(nfoods, foodids, dri_ids, nutrs)
   for index in 1:nfoods
     foodid = foodids[index]
     for nutid in dri_ids
-      nutamount = nutrs[.&(nutrs[:food] .== foodid, nutrs[:nut] .== nutid), :amount]
+      nutamount = nutrs[.&(nutrs[!, :food] .== foodid, nutrs[!, :nut] .== nutid), :amount]
       pushtolist!(nutamounts, nutamount, index)
       # if length(nutamount) > 1
       #   warn("More than one nutrient ($nutid) for food ($foodid)")
@@ -331,8 +331,8 @@ function loaddata(your_age, your_sex, your_weight; only_groups=[])
   # mkpath("../data")
   if !isfile("all_opt_inputs_$(your_age)_$(your_sex).serialized")
     nutrs, dri, groups = allnutdata(data_folder="./data/sr28asc", dri_file="./data/dri_new.csv", updatedir="./data/SR28upd0516");
-    foodids = unique(nutrs[:food]);
-    foodnames = unique(nutrs[:shortdes]);
+    foodids = unique(nutrs[!, :food]);
+    foodnames = unique(nutrs[!, :shortdes]);
     nfoods = length(foodids)
     dri_ids, mins, maxs = get_min_max(dri, age=your_age, sex=your_sex, weight=your_weight);
 
@@ -344,16 +344,16 @@ function loaddata(your_age, your_sex, your_weight; only_groups=[])
         end
       end
     
-      foodids_org = deepcopy(nutrs[:food]);
+      foodids_org = deepcopy(nutrs[!, :food]);
       nutrs = nutrs[select_rows, :];
-      foodids = unique(nutrs[:food]);
-      foodnames = unique(nutrs[:shortdes]);
+      foodids = unique(nutrs[!, :food]);
+      foodnames = unique(nutrs[!, :shortdes]);
       nfoods = length(foodids);
 
       calories = Float64[] # calories in each food
       for index in 1:nfoods
         foodid = foodids[index]
-        calorie = nutrs[.&(nutrs[:food] .== foodid, nutrs[:nut] .== 208), :amount]
+        calorie = nutrs[.&(nutrs[!, :food] .== foodid, nutrs[!, :nut] .== 208), :amount]
         push!(calories, calorie[1])
       end
       nutamounts = getnutamounts(nfoods, foodids, dri_ids, nutrs);
@@ -362,7 +362,7 @@ function loaddata(your_age, your_sex, your_weight; only_groups=[])
       calories = Float64[] # calories in each food
       for index in 1:nfoods
         foodid = foodids[index]
-        calorie = nutrs[.&(nutrs[:food] .== foodid, nutrs[:nut] .== 208), :amount]
+        calorie = nutrs[.&(nutrs[!, :food] .== foodid, nutrs[!, :nut] .== 208), :amount]
         push!(calories, calorie[1])
       end
     end
@@ -393,21 +393,21 @@ end
 "Converts mg to g"
 function mg_to_g!(dd::AbstractDataFrame, unitcolumn::Symbol, columns::AbstractArray{Symbol, 1}, unit::AbstractString)
   for col in columns
-    dd[dd[unitcolumn] .== unit, col] = mg_to_g.(dd[dd[unitcolumn] .== unit, col])
+    dd[dd[!, unitcolumn] .== unit, col] = mg_to_g.(dd[dd[!, unitcolumn] .== unit, col])
   end
 end
 
 "Converts ug to g"
 function ug_to_g!(dd::AbstractDataFrame, unitcolumn::Symbol, columns::AbstractArray{Symbol, 1}, unit::AbstractString)
   for col in columns
-    dd[dd[unitcolumn] .== unit, col] = ug_to_g.(dd[dd[unitcolumn] .== unit, col])
+    dd[dd[!, unitcolumn] .== unit, col] = ug_to_g.(dd[dd[!, unitcolumn] .== unit, col])
   end
 end
 
 "Converts kg to g"
 function kg_to_g!(dd::AbstractDataFrame, unitcolumn::Symbol, columns::AbstractArray{Symbol, 1}, unit::AbstractString)
   for col in columns
-    dd[dd[unitcolumn] .== unit, col] = kg_to_g.(dd[dd[unitcolumn] .== unit, col])
+    dd[dd[!, unitcolumn] .== unit, col] = kg_to_g.(dd[dd[!, unitcolumn] .== unit, col])
   end
 end
 
@@ -432,7 +432,7 @@ end
 Converts the values in columns `columns` to g or ml.
 """
 function convert_units_to_g(d::AbstractDataFrame, unitcolumn::Symbol, columns::AbstractArray{Symbol, 1})
-  current_values = unique(d[unitcolumn])
+  current_values = unique(d[!, unitcolumn])
   d = DataFrame(d);
   for vvs in current_values
     if vvs == "g"
@@ -446,16 +446,16 @@ function convert_units_to_g(d::AbstractDataFrame, unitcolumn::Symbol, columns::A
     
     if vv == "kg" || vv == "l"
       kg_to_g!(d, unitcolumn, columns, vvs)
-      d[d[unitcolumn] .== vvs, unitcolumn] = "g"
+      d[d[!, unitcolumn] .== vvs, unitcolumn] .= "g"
     elseif vv == "ug"
       ug_to_g!(d, unitcolumn, columns, vvs)
-      d[d[unitcolumn] .== vvs, unitcolumn] = "g"
+      d[d[!, unitcolumn] .== vvs, unitcolumn] .= "g"
     elseif vv == "mg" || vv == "mg/kg"
       mg_to_g!(d, unitcolumn, columns, vvs)
       if vv == "mg/kg"
-        d[d[unitcolumn] .== vvs, unitcolumn] = "g/kg"
+        d[d[!, unitcolumn] .== vvs, unitcolumn] .= "g/kg"
       else
-        d[d[unitcolumn] .== vvs, unitcolumn] = "g"
+        d[d[!, unitcolumn] .== vvs, unitcolumn] .= "g"
       end
     end
   end
@@ -494,7 +494,7 @@ Returns foods' `longdes` given their ids
 function find_longdes(nutrs, foodids)
   foodlongnames = AbstractString[]
   for id in foodids
-    longdes = nutrs[nutrs[:food] .== id, :longdes][1]
+    longdes = nutrs[nutrs[!, :food] .== id, :longdes][1]
     push!(foodlongnames, longdes)
   end
   return foodlongnames
@@ -506,7 +506,7 @@ Returns foods groups given their ids
 function find_groups(nutrs, foodids)
   foodgroup = Int64[]
   for id in foodids
-    groupid = nutrs[nutrs[:food] .== id, :group][1]
+    groupid = nutrs[nutrs[!, :food] .== id, :group][1]
     push!(foodgroup, groupid)
   end
   return foodgroup

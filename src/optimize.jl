@@ -13,11 +13,9 @@ This is also called the Stigler's Diet Problem
 """
 function optimize(mins, maxs, nutamounts, calories, dri_ids, nfoods, exclude_indices)
 
-	optimizer = Juniper.Optimizer
-	params = Dict{Symbol,Any}()
-	params[:nl_solver] = with_optimizer(Ipopt.Optimizer, print_level=0)
-	# params[:mip_solver] = with_optimizer(Cbc.Optimizer, logLevel=0)
-	m = Model(with_optimizer(optimizer, params))
+	nl_solver = optimizer_with_attributes(Ipopt.Optimizer, "print_level"=>0)
+	minlp_solver = optimizer_with_attributes(Juniper.Optimizer, "nl_solver"=>nl_solver)
+	m = Model(minlp_solver)
 
 	nnutrients = length(dri_ids)
 
